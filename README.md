@@ -1,6 +1,7 @@
 # 🚗 Dokumentasi Arsitektur & Analisis Basis Data: Sistem Manajemen Parkir (`db_parkir`)
 
 Dokumentasi ini menyajikan pelacakan logistik interaktif pada `db_parkir`. Setiap tahap eksekusi telah diurutkan berdasarkan siklus hidup sebuah DBMS (Database Management System): mulai dari tahap pembuatan tabel, pemrosesan data, perhitungan dasar agregat, implementasi kueri tingkat lanjut antar tabel, hingga pemanfaatan SQL Views.
+![mysql](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXizOekeei5tf2Z8KG1_DI-hjwgLEttS-M9A&s)
 
 ## 👥 Anggota Kelompok
 
