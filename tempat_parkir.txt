@@ -1,0 +1,586 @@
+
+Setting environment for using XAMPP for Windows.
+Muhammad Hubbi@LAPTOP-9LKANGI2 d:\xampp
+# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database db_parkir;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use db_parkir;
+Database changed
+MariaDB [db_parkir]> create table kendaraan (
+    -> id_kendaraan int primary key auto_increment,
+    -> nama_kendaraan varchar(20),
+    -> nomor_plat varchar(10),
+    -> jenis_kendaraan varchar(10),
+    -> warna_kendaraan varchar(15));
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [db_parkir]> describe kendraan;
+ERROR 1146 (42S02): Table 'db_parkir.kendraan' doesn't exist
+MariaDB [db_parkir]> describe kendaraan;
++-----------------+-------------+------+-----+---------+----------------+
+| Field           | Type        | Null | Key | Default | Extra          |
++-----------------+-------------+------+-----+---------+----------------+
+| id_kendaraan    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama_kendaraan  | varchar(20) | YES  |     | NULL    |                |
+| nomor_plat      | varchar(10) | YES  |     | NULL    |                |
+| jenis_kendaraan | varchar(10) | YES  |     | NULL    |                |
+| warna_kendaraan | varchar(15) | YES  |     | NULL    |                |
++-----------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.013 sec)
+
+MariaDB [db_parkir]> create table user (
+    -> id_user int primary key auto_increment,
+    -> nama_user varchar(50),
+    -> id_kendaraan int,
+    -> foreign key (id_kendaraan) references kendaraan(id_kendaraan));
+Query OK, 0 rows affected (0.023 sec)
+
+MariaDB [db_parkir]> describe user;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id_user      | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama_user    | varchar(50) | YES  |     | NULL    |                |
+| id_kendaraan | int(11)     | YES  | MUL | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.013 sec)
+
+MariaDB [db_parkir]> create table tempat_parkir (
+    -> id_tepat_parkir int,
+    -> kode_parkir varchar(10),
+    -> jenis_slot varchar(10),
+    -> id_kendaraan int,
+    -> foreign key (id_kendaraan) references kendaraan(id_kendaraan));
+Query OK, 0 rows affected (0.025 sec)
+
+MariaDB [db_parkir]> describe tempat_parkir;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| id_tepat_parkir | int(11)     | YES  |     | NULL    |       |
+| kode_parkir     | varchar(10) | YES  |     | NULL    |       |
+| jenis_slot      | varchar(10) | YES  |     | NULL    |       |
+| id_kendaraan    | int(11)     | YES  | MUL | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.013 sec)
+
+MariaDB [db_parkir]> INSERT INTO kendaraan (nama_kendaraan, nomor_plat, jenis_kendaraan, warna_kendaraan) VALUES
+    -> ('Avanza', 'B1234AA', 'Mobil', 'Hitam'),
+    -> ('Civic', 'B2345BB', 'Mobil', 'Putih'),
+    -> ('Beat', 'B3456CC', 'Motor', 'Merah'),
+    -> ('Nmax', 'B4567DD', 'Motor', 'Biru'),
+    -> ('Fortuner', 'B5678EE', 'Mobil', 'Abu'),
+    -> ('Vario', 'B6789FF', 'Motor', 'Hitam'),
+    -> ('Brio', 'B7890GG', 'Mobil', 'Kuning'),
+    -> ('Aerox', 'B8901HH', 'Motor', 'Silver'),
+    -> ('Xpander', 'B9012II', 'Mobil', 'Putih'),
+    -> ('Supra', 'B0123JJ', 'Motor', 'Merah');
+Query OK, 10 rows affected (0.031 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+MariaDB [db_parkir]> INSERT INTO user (nama_user, id_kendaraan) VALUES
+    -> ('Andi', 1),
+    -> ('Budi', 2),
+    -> ('Citra', 3),
+    -> ('Deni', NULL),
+    -> ('Eka', 5),
+    -> ('Fajar', NULL),
+    -> ('Gilang', 7),
+    -> ('Hadi', 8),
+    -> ('Intan', NULL),
+    -> ('Joko', 10);
+Query OK, 10 rows affected (0.004 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+MariaDB [db_parkir]> ALTER TABLE tempat_parkir
+    -> DROP COLUMN jenis_slot;
+Query OK, 0 rows affected (0.008 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [db_parkir]> INSERT INTO tempat_parkir (id_tepat_parkir, kode_parkir, id_kendaraan) VALUES
+    -> (1, 'A1', 1),
+    -> (2, 'A2', 2),
+    -> (3, 'A3', 3),
+    -> (4, 'A4', NULL),
+    -> (5, 'B1', 5),
+    -> (6, 'B2', 6),
+    -> (7, 'B3', NULL),
+    -> (8, 'B4', 8),
+    -> (9, 'C1', 9),
+    -> (10, 'C2', NULL);
+Query OK, 10 rows affected (0.004 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+MariaDB [db_parkir]> select count(*) from user;
++----------+
+| count(*) |
++----------+
+|       10 |
++----------+
+1 row in set (0.000 sec)
+
+MariaDB [db_parkir]> select * from user;
++---------+-----------+--------------+
+| id_user | nama_user | id_kendaraan |
++---------+-----------+--------------+
+|       1 | Andi      |            1 |
+|       2 | Budi      |            2 |
+|       3 | Citra     |            3 |
+|       4 | Deni      |         NULL |
+|       5 | Eka       |            5 |
+|       6 | Fajar     |         NULL |
+|       7 | Gilang    |            7 |
+|       8 | Hadi      |            8 |
+|       9 | Intan     |         NULL |
+|      10 | Joko      |           10 |
++---------+-----------+--------------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select * from user where id_kendaraan = null;
+Empty set (0.000 sec)
+
+MariaDB [db_parkir]> select * from user where id_kendaraan = NULL;
+Empty set (0.000 sec)
+
+MariaDB [db_parkir]> select * from user where id_kendaraan is NULL;
++---------+-----------+--------------+
+| id_user | nama_user | id_kendaraan |
++---------+-----------+--------------+
+|       4 | Deni      |         NULL |
+|       6 | Fajar     |         NULL |
+|       9 | Intan     |         NULL |
++---------+-----------+--------------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select * from count(*) where id_kendaraan is not NULL;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'count(*) where id_kendaraan is not NULL' at line 1
+MariaDB [db_parkir]> select count(*) from where id_kendaraan is not NULL;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'where id_kendaraan is not NULL' at line 1
+MariaDB [db_parkir]> select count(*) from user where id_kendaraan is not NULL;
++----------+
+| count(*) |
++----------+
+|        7 |
++----------+
+1 row in set (0.000 sec)
+
+MariaDB [db_parkir]> select * from kendaraan;
++--------------+----------------+------------+-----------------+-----------------+
+| id_kendaraan | nama_kendaraan | nomor_plat | jenis_kendaraan | warna_kendaraan |
++--------------+----------------+------------+-----------------+-----------------+
+|            1 | Avanza         | B1234AA    | Mobil           | Hitam           |
+|            2 | Civic          | B2345BB    | Mobil           | Putih           |
+|            3 | Beat           | B3456CC    | Motor           | Merah           |
+|            4 | Nmax           | B4567DD    | Motor           | Biru            |
+|            5 | Fortuner       | B5678EE    | Mobil           | Abu             |
+|            6 | Vario          | B6789FF    | Motor           | Hitam           |
+|            7 | Brio           | B7890GG    | Mobil           | Kuning          |
+|            8 | Aerox          | B8901HH    | Motor           | Silver          |
+|            9 | Xpander        | B9012II    | Mobil           | Putih           |
+|           10 | Supra          | B0123JJ    | Motor           | Merah           |
++--------------+----------------+------------+-----------------+-----------------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select * from kendaraan order by nama_kendaraan asc;
++--------------+----------------+------------+-----------------+-----------------+
+| id_kendaraan | nama_kendaraan | nomor_plat | jenis_kendaraan | warna_kendaraan |
++--------------+----------------+------------+-----------------+-----------------+
+|            8 | Aerox          | B8901HH    | Motor           | Silver          |
+|            1 | Avanza         | B1234AA    | Mobil           | Hitam           |
+|            3 | Beat           | B3456CC    | Motor           | Merah           |
+|            7 | Brio           | B7890GG    | Mobil           | Kuning          |
+|            2 | Civic          | B2345BB    | Mobil           | Putih           |
+|            5 | Fortuner       | B5678EE    | Mobil           | Abu             |
+|            4 | Nmax           | B4567DD    | Motor           | Biru            |
+|           10 | Supra          | B0123JJ    | Motor           | Merah           |
+|            6 | Vario          | B6789FF    | Motor           | Hitam           |
+|            9 | Xpander        | B9012II    | Mobil           | Putih           |
++--------------+----------------+------------+-----------------+-----------------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select * from kendaraan where jenis_kendaraan = "Motor" order by nama_kendaraan asc;
++--------------+----------------+------------+-----------------+-----------------+
+| id_kendaraan | nama_kendaraan | nomor_plat | jenis_kendaraan | warna_kendaraan |
++--------------+----------------+------------+-----------------+-----------------+
+|            8 | Aerox          | B8901HH    | Motor           | Silver          |
+|            3 | Beat           | B3456CC    | Motor           | Merah           |
+|            4 | Nmax           | B4567DD    | Motor           | Biru            |
+|           10 | Supra          | B0123JJ    | Motor           | Merah           |
+|            6 | Vario          | B6789FF    | Motor           | Hitam           |
++--------------+----------------+------------+-----------------+-----------------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select * from kendaraan where jenis_kendaraan = "Mobil" order by nama_kendaraan asc;
++--------------+----------------+------------+-----------------+-----------------+
+| id_kendaraan | nama_kendaraan | nomor_plat | jenis_kendaraan | warna_kendaraan |
++--------------+----------------+------------+-----------------+-----------------+
+|            1 | Avanza         | B1234AA    | Mobil           | Hitam           |
+|            7 | Brio           | B7890GG    | Mobil           | Kuning          |
+|            2 | Civic          | B2345BB    | Mobil           | Putih           |
+|            5 | Fortuner       | B5678EE    | Mobil           | Abu             |
+|            9 | Xpander        | B9012II    | Mobil           | Putih           |
++--------------+----------------+------------+-----------------+-----------------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select * from tempat_parkir;
++-----------------+-------------+--------------+
+| id_tepat_parkir | kode_parkir | id_kendaraan |
++-----------------+-------------+--------------+
+|               1 | A1          |            1 |
+|               2 | A2          |            2 |
+|               3 | A3          |            3 |
+|               4 | A4          |         NULL |
+|               5 | B1          |            5 |
+|               6 | B2          |            6 |
+|               7 | B3          |         NULL |
+|               8 | B4          |            8 |
+|               9 | C1          |            9 |
+|              10 | C2          |         NULL |
++-----------------+-------------+--------------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select user.nama_user, kendaraan.nama_kendaraan from user INNER JOIN kendaraan On user.id_kendaraan = kendaraan.id_kendaraan;
++-----------+----------------+
+| nama_user | nama_kendaraan |
++-----------+----------------+
+| Andi      | Avanza         |
+| Budi      | Civic          |
+| Citra     | Beat           |
+| Eka       | Fortuner       |
+| Gilang    | Brio           |
+| Hadi      | Aerox          |
+| Joko      | Supra          |
++-----------+----------------+
+7 rows in set (0.001 sec)
+
+MariaDB [db_parkir]> select user.nama_user, kendaraan.nama_kendaraan from user LEFT JOIN kendaraan On user.id_kendaraan = kendaraan.id_kendaraan;
++-----------+----------------+
+| nama_user | nama_kendaraan |
++-----------+----------------+
+| Andi      | Avanza         |
+| Budi      | Civic          |
+| Citra     | Beat           |
+| Deni      | NULL           |
+| Eka       | Fortuner       |
+| Fajar     | NULL           |
+| Gilang    | Brio           |
+| Hadi      | Aerox          |
+| Intan     | NULL           |
+| Joko      | Supra          |
++-----------+----------------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select kendaraan.nama_kendaraan, tempat_parkir.kode_parkir from tempat_parkir inner join kendaraan on tempat_parkir.id_kendaraan = kendaraan.id_kendaraan
+    -> ;
++----------------+-------------+
+| nama_kendaraan | kode_parkir |
++----------------+-------------+
+| Avanza         | A1          |
+| Civic          | A2          |
+| Beat           | A3          |
+| Fortuner       | B1          |
+| Vario          | B2          |
+| Aerox          | B4          |
+| Xpander        | C1          |
++----------------+-------------+
+7 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select kendaraan.nama_kendaraan, tempat_parkir.kode_parkir from tempat_parkir right join kendaraan on tempat_parkir.id_kendaraan = kendaraan.id_kendaraan;
++----------------+-------------+
+| nama_kendaraan | kode_parkir |
++----------------+-------------+
+| Avanza         | A1          |
+| Civic          | A2          |
+| Beat           | A3          |
+| Nmax           | NULL        |
+| Fortuner       | B1          |
+| Vario          | B2          |
+| Brio           | NULL        |
+| Aerox          | B4          |
+| Xpander        | C1          |
+| Supra          | NULL        |
++----------------+-------------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select kendaraan.nama_kendaraan, tempat_parkir.kode_parkir from tempat_parkir right join kendaraan on tempat_parkir.id_kendaraan = kendaraan.id_kendaraan where tempat_parkir.kode_parkir is null;
++----------------+-------------+
+| nama_kendaraan | kode_parkir |
++----------------+-------------+
+| Nmax           | NULL        |
+| Brio           | NULL        |
+| Supra          | NULL        |
++----------------+-------------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select kendaraan.nama_kendaraan, tempat_parkir.kode_parkir from tempat_parkir right join kendaraan on tempat_parkir.id_kendaraan = kendaraan.id_kendaraan where tempat_parkir.kode_parkir is null and kendaraan.jenis_kendaraan = "Motor";
++----------------+-------------+
+| nama_kendaraan | kode_parkir |
++----------------+-------------+
+| Nmax           | NULL        |
+| Supra          | NULL        |
++----------------+-------------+
+2 rows in set (0.002 sec)
+
+MariaDB [db_parkir]> select * from kendaraan;
++--------------+----------------+------------+-----------------+-----------------+
+| id_kendaraan | nama_kendaraan | nomor_plat | jenis_kendaraan | warna_kendaraan |
++--------------+----------------+------------+-----------------+-----------------+
+|            1 | Avanza         | B1234AA    | Mobil           | Hitam           |
+|            2 | Civic          | B2345BB    | Mobil           | Putih           |
+|            3 | Beat           | B3456CC    | Motor           | Merah           |
+|            4 | Nmax           | B4567DD    | Motor           | Biru            |
+|            5 | Fortuner       | B5678EE    | Mobil           | Abu             |
+|            6 | Vario          | B6789FF    | Motor           | Hitam           |
+|            7 | Brio           | B7890GG    | Mobil           | Kuning          |
+|            8 | Aerox          | B8901HH    | Motor           | Silver          |
+|            9 | Xpander        | B9012II    | Mobil           | Putih           |
+|           10 | Supra          | B0123JJ    | Motor           | Merah           |
++--------------+----------------+------------+-----------------+-----------------+
+10 rows in set (0.001 sec)
+
+MariaDB [db_parkir]> select * from tempat_parkir;
++-----------------+-------------+--------------+
+| id_tepat_parkir | kode_parkir | id_kendaraan |
++-----------------+-------------+--------------+
+|               1 | A1          |            1 |
+|               2 | A2          |            2 |
+|               3 | A3          |            3 |
+|               4 | A4          |         NULL |
+|               5 | B1          |            5 |
+|               6 | B2          |            6 |
+|               7 | B3          |         NULL |
+|               8 | B4          |            8 |
+|               9 | C1          |            9 |
+|              10 | C2          |         NULL |
++-----------------+-------------+--------------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> update tempat_parkir set id_kendaraan = null where kode_parkir = "C1";
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [db_parkir]> select * from tempat_parkir;
++-----------------+-------------+--------------+
+| id_tepat_parkir | kode_parkir | id_kendaraan |
++-----------------+-------------+--------------+
+|               1 | A1          |            1 |
+|               2 | A2          |            2 |
+|               3 | A3          |            3 |
+|               4 | A4          |         NULL |
+|               5 | B1          |            5 |
+|               6 | B2          |            6 |
+|               7 | B3          |         NULL |
+|               8 | B4          |            8 |
+|               9 | C1          |         NULL |
+|              10 | C2          |         NULL |
++-----------------+-------------+--------------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select kendaraan.nama_kendaraan, tempat_parkir.kode_parkir from tempat_parkir right join kendaraan on tempat_parkir.id_kendaraan = kendaraan.id_kendaraan;
++----------------+-------------+
+| nama_kendaraan | kode_parkir |
++----------------+-------------+
+| Avanza         | A1          |
+| Civic          | A2          |
+| Beat           | A3          |
+| Nmax           | NULL        |
+| Fortuner       | B1          |
+| Vario          | B2          |
+| Brio           | NULL        |
+| Aerox          | B4          |
+| Xpander        | NULL        |
+| Supra          | NULL        |
++----------------+-------------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> select * from kendaraan;
++--------------+----------------+------------+-----------------+-----------------+
+| id_kendaraan | nama_kendaraan | nomor_plat | jenis_kendaraan | warna_kendaraan |
++--------------+----------------+------------+-----------------+-----------------+
+|            1 | Avanza         | B1234AA    | Mobil           | Hitam           |
+|            2 | Civic          | B2345BB    | Mobil           | Putih           |
+|            3 | Beat           | B3456CC    | Motor           | Merah           |
+|            4 | Nmax           | B4567DD    | Motor           | Biru            |
+|            5 | Fortuner       | B5678EE    | Mobil           | Abu             |
+|            6 | Vario          | B6789FF    | Motor           | Hitam           |
+|            7 | Brio           | B7890GG    | Mobil           | Kuning          |
+|            8 | Aerox          | B8901HH    | Motor           | Silver          |
+|            9 | Xpander        | B9012II    | Mobil           | Putih           |
+|           10 | Supra          | B0123JJ    | Motor           | Merah           |
++--------------+----------------+------------+-----------------+-----------------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> delete from kendaraan where id_kendaraan = 9;
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [db_parkir]> select * from kendaraan;
++--------------+----------------+------------+-----------------+-----------------+
+| id_kendaraan | nama_kendaraan | nomor_plat | jenis_kendaraan | warna_kendaraan |
++--------------+----------------+------------+-----------------+-----------------+
+|            1 | Avanza         | B1234AA    | Mobil           | Hitam           |
+|            2 | Civic          | B2345BB    | Mobil           | Putih           |
+|            3 | Beat           | B3456CC    | Motor           | Merah           |
+|            4 | Nmax           | B4567DD    | Motor           | Biru            |
+|            5 | Fortuner       | B5678EE    | Mobil           | Abu             |
+|            6 | Vario          | B6789FF    | Motor           | Hitam           |
+|            7 | Brio           | B7890GG    | Mobil           | Kuning          |
+|            8 | Aerox          | B8901HH    | Motor           | Silver          |
+|           10 | Supra          | B0123JJ    | Motor           | Merah           |
++--------------+----------------+------------+-----------------+-----------------+
+9 rows in set (0.000 sec)
+
+MariaDB [db_parkir]> CREATE VIEW view_parkir_lengkap AS
+    -> SELECT
+    -> user.nama_user,
+    -> kendaraan.nama_kendaraan,
+    -> kendaraan.nomor_plat,
+    -> kendaraan.jenis_kendaraan,
+    -> tempat_parkir.nomor_slot
+    -> FROM user
+    -> LEFT JOIN kendaraan
+    -> ON user.id_kendaraan = kendaraan.id_kendaraan
+    -> LEFT JOIN tempat_parkir
+    -> ON kendaraan.id_kendaraan = tempat_parkir.id_kendaraan;
+ERROR 1054 (42S22): Unknown column 'tempat_parkir.nomor_slot' in 'field list'
+MariaDB [db_parkir]> CREATE VIEW view_parkir_lengkap AS
+    -> SELECT
+    -> user.nama_user,
+    -> kendaraan.nama_kendaraan,
+    -> kendaraan.kode_plat,
+    -> kendaraan.jenis_kendaraan,
+    -> tempat_parkir.nomor_slot
+    -> FROM user
+    -> LEFT JOIN kendaraan
+    -> ON user.id_kendaraan = kendaraan.id_kendaraan
+    -> LEFT JOIN tempat_parkir
+    -> ON kendaraan.id_kendaraan = tempat_parkir.id_kendaraan;
+ERROR 1054 (42S22): Unknown column 'kendaraan.kode_plat' in 'field list'
+MariaDB [db_parkir]> describe kendaraan;
++-----------------+-------------+------+-----+---------+----------------+
+| Field           | Type        | Null | Key | Default | Extra          |
++-----------------+-------------+------+-----+---------+----------------+
+| id_kendaraan    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama_kendaraan  | varchar(20) | YES  |     | NULL    |                |
+| nomor_plat      | varchar(10) | YES  |     | NULL    |                |
+| jenis_kendaraan | varchar(10) | YES  |     | NULL    |                |
+| warna_kendaraan | varchar(15) | YES  |     | NULL    |                |
++-----------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.015 sec)
+
+MariaDB [db_parkir]>
+MariaDB [db_parkir]> CREATE VIEW view_parkir_lengkap AS
+    -> SELECT
+    -> user.nama_user,
+    -> kendaraan.nama_kendaraan,
+    -> kendaraan.nomor_plat,
+    -> kendaraan.jenis_kendaraan,
+    -> tempat_parkir.nomor_slot
+    -> FROM user
+    -> LEFT JOIN kendaraan
+    -> ON user.id_kendaraan = kendaraan.id_kendaraan
+    -> LEFT JOIN tempat_parkir
+    -> ON kendaraan.id_kendaraan = tempat_parkir.id_kendaraan;
+ERROR 1054 (42S22): Unknown column 'tempat_parkir.nomor_slot' in 'field list'
+MariaDB [db_parkir]> describe tempat_parkir;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| id_tepat_parkir | int(11)     | YES  |     | NULL    |       |
+| kode_parkir     | varchar(10) | YES  |     | NULL    |       |
+| id_kendaraan    | int(11)     | YES  | MUL | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.014 sec)
+
+MariaDB [db_parkir]>
+MariaDB [db_parkir]> CREATE VIEW view_parkir_lengkap AS
+    -> SELECT
+    -> user.nama_user,
+    -> kendaraan.nama_kendaraan,
+    -> kendaraan.nomor_plat,
+    -> kendaraan.jenis_kendaraan,
+    -> tempat_parkir.kode_parkir
+    -> FROM user
+    -> LEFT JOIN kendaraan
+    -> ON user.id_kendaraan = kendaraan.id_kendaraan
+    -> LEFT JOIN tempat_parkir
+    -> ON kendaraan.id_kendaraan = tempat_parkir.id_kendaraan;
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [db_parkir]> select * from view_parkir_lengkap;
++-----------+----------------+------------+-----------------+-------------+
+| nama_user | nama_kendaraan | nomor_plat | jenis_kendaraan | kode_parkir |
++-----------+----------------+------------+-----------------+-------------+
+| Andi      | Avanza         | B1234AA    | Mobil           | A1          |
+| Budi      | Civic          | B2345BB    | Mobil           | A2          |
+| Citra     | Beat           | B3456CC    | Motor           | A3          |
+| Deni      | NULL           | NULL       | NULL            | NULL        |
+| Eka       | Fortuner       | B5678EE    | Mobil           | B1          |
+| Fajar     | NULL           | NULL       | NULL            | NULL        |
+| Gilang    | Brio           | B7890GG    | Mobil           | NULL        |
+| Hadi      | Aerox          | B8901HH    | Motor           | B4          |
+| Intan     | NULL           | NULL       | NULL            | NULL        |
+| Joko      | Supra          | B0123JJ    | Motor           | NULL        |
++-----------+----------------+------------+-----------------+-------------+
+10 rows in set (0.003 sec)
+
+MariaDB [db_parkir]> CREATE VIEW view_user_tanpa_kendaraan AS
+    -> SELECT
+    -> id_user,
+    -> nama_user
+    -> FROM user
+    -> WHERE id_kendaraan IS NULL;
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [db_parkir]> select * from view_user_tanpa_kendaraan;
++---------+-----------+
+| id_user | nama_user |
++---------+-----------+
+|       4 | Deni      |
+|       6 | Fajar     |
+|       9 | Intan     |
++---------+-----------+
+3 rows in set (0.001 sec)
+
+MariaDB [db_parkir]> CREATE VIEW view_kendaraan_parkir AS
+    -> SELECT
+    -> kendaraan.nomor_plat,
+    -> kendaraan.jenis_kendaraan,
+    -> tempat_parkir.nomor_slot
+    -> FROM kendaraan
+    -> JOIN tempat_parkir
+    -> ON kendaraan.id_kendaraan = tempat_parkir.id_kendaraan;
+ERROR 1054 (42S22): Unknown column 'tempat_parkir.nomor_slot' in 'field list'
+MariaDB [db_parkir]> CREATE VIEW view_kendaraan_parkir AS
+    -> SELECT
+    -> kendaraan.nomor_plat,
+    -> kendaraan.jenis_kendaraan,
+    -> tempat_parkir.kode_parkir
+    -> FROM kendaraan
+    -> JOIN tempat_parkir
+    -> ON kendaraan.id_kendaraan = tempat_parkir.id_kendaraan;
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [db_parkir]> select * from view_kendaraan_parkir;
++------------+-----------------+-------------+
+| nomor_plat | jenis_kendaraan | kode_parkir |
++------------+-----------------+-------------+
+| B1234AA    | Mobil           | A1          |
+| B2345BB    | Mobil           | A2          |
+| B3456CC    | Motor           | A3          |
+| B5678EE    | Mobil           | B1          |
+| B6789FF    | Motor           | B2          |
+| B8901HH    | Motor           | B4          |
++------------+-----------------+-------------+
+6 rows in set (0.001 sec)
+
+MariaDB [db_parkir]>
